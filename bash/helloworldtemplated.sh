@@ -1,5 +1,5 @@
 #!/bin/bash
-# My seconf script - helloworldtemplated.sh
+# My second script - helloworldtemplated.sh
 
 cat <<EOF
 Hello World!
