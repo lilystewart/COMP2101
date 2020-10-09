@@ -7,8 +7,8 @@
 #  put the number of sides in a variable which is used as the range for the random number
 #  put the bias, or minimum value for the generated number in another variable
 #  roll the dice using the variables for the range and bias i.e. RANDOM % range + bias
-sides=$((6))
-bias=$((1))
+sides=6
+bias=1
 # Task 2:
 #  generate the sum of the dice
 #  generate the average of the dice
