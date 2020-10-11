@@ -19,15 +19,33 @@
 ###############
 # Variables   #
 ###############
-title="Overlord"
-myname="dennis"
-hostname="myhostname"
-
+myname=$USER
+hostname=$HOSTNAME
+day=$(date +%A)
+time=$(date +%T" "%p)
+#if statement for different titles depending on the day of the week.
+title=""
+if [ $day == "Sunday" ]; then
+  title="High Mage"
+elif [ $day == "Tuesday" ]; then
+  title="Royal Templar"
+elif [ $day == "Wednesday" ]; then
+  title="Prime Justicar"
+elif [ $day == "Thursday" ]; then
+  title="Archwarrior"
+elif [ $day == "Friday" ]; then
+  title="Alpha"
+elif [ $day == "Saturday" ]; then
+  title="Sentinel"
+else
+  title="High Sage"
+fi
 ###############
 # Main        #
 ###############
 cat <<EOF
 
-Welcome to planet $hostname, "$title $myname!"
+Welcome to Planet $hostname, $title $myname!
+It is $day at $time.
 
 EOF
