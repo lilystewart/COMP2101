@@ -25,16 +25,16 @@ read -p "Give me a number from 1 to 10: " userguess # ask for a guess
 
 while [ -z $userguess ]; do
   read -p "You did not enter a number. Please enter a number from 1 to 10: " userguess
-    if [[ $userguess -lt 1 ]]; then
-      read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
-    elif [[ $userguess -gt 10 ]]; then
-      read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
-    fi
+    #if [[ $userguess -lt 1 ]]; then
+      #read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
+    #elif [[ $userguess -gt 10 ]]; then
+      #read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
+    #fi
 done
 
-while [[ $userguess -lt 1 || $userguess -gt 1 ]]; do
-  read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
-done
+#while [[ $userguess -lt 1 || $userguess -gt 1 ]]; do
+  #read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
+#done
 
 while [ $userguess != $secretnumber ]; do
 
