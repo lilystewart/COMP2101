@@ -84,7 +84,7 @@ externalIP=$(curl -s icanhazip.com)
 externalName=$(getent hosts $externalIP | awk '{print $2}')
 
 # Task 2
-routerAddress=$(route -n | grep -w UG | awk $'{print $2}')
+routerAddress=$(ip r| grep -w default | awk $'{print $3}')
 routerName=$(getent hosts $routerAddress | awk '{print $2}')
 
 

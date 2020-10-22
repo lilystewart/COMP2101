@@ -16,26 +16,12 @@ EOF
 
 # Pick the secret number and save it
 secretnumber=$(($RANDOM % 10 +1)) # save our secret number to compare later
-echo $secretnumber  # for testing purposes
-echo ""
+#echo $secretnumber  # for testing purposes
+#echo ""
 # This loop repeatedly asks the user to guess and tells them if they got the right answer
 # TASK 1: Test the user input to make sure it is not blank
 # TASK 2: Test the user input to make sure it is a number from 1 to 10 inclusive
 # TASK 3: Tell the user if their guess is too low, or too high after each incorrect guess
-#read -p "Give me a number from 1 to 10: " userguess # ask for a guess
-
-#while [ -z $userguess ]; do
-  #read -p "You did not enter a number. Please enter a number from 1 to 10: " userguess
-    #if [[ $userguess -lt 1 ]]; then
-      #read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
-    #elif [[ $userguess -gt 10 ]]; then
-      #read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
-    #fi
-#done
-
-#while [[ $userguess -lt 1 || $userguess -gt 1 ]]; do
-  #read -p "You did not enter a number between 1 and 10. Please do so now: " userguess
-#done
 
 while [ "$userguess" != $secretnumber ]; do
       read -p "Give me a number from 1 to 10: " userguess # ask for a guess
