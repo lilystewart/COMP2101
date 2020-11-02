@@ -133,7 +133,7 @@ for interface in "${interfaces[@]}"; do   # for each interface in interface arra
   network_address=$(ip route list dev ens34 scope link | awk '{print $1'} | sed 's+/24+''+g')
   # network_number=$(cut -d / -f 1 <<<"$network_address") This was not testing well for me due to the grep command below.
   # ended up adding sed to network_address to get the output I needed to run the rest of the script
-  grep -q $network_address /etc/networks || echo "network$interface" "$network_address"|sudo tee -a /etc/networks
+  grep -q $network_address /etc/networks || echo "network '${interfaces[@]'" "$network_address"|sudo tee -a /etc/networks
   network_name=$(getent networks $network_address|awk '{print $1}')
 
 
