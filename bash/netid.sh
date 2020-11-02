@@ -113,7 +113,7 @@ interfaces=()
 
 for interface in $(ip a |awk '/: e/{gsub(/:/,"");print $2}' | sed -e s/@ens34//g); do # identifies all interfaces including vlans (without the @interface which is causing error)
   interfaces+=("$interface")
-  echo "${interfaces[@]}"
+  #echo "${interfaces[@]}" - testing purposes
 done
 
 for interface in "${interfaces[@]}"; do
