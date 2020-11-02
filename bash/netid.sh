@@ -20,6 +20,42 @@
 #         Your script must allow the user to specify both verbose mode and an interface name if they want
 # TASK 2: Dynamically identify the list of interface names for the computer running the script, and use a for loop to generate the report for every interface except loopback
 
+#########################
+# Initialize Variables #
+########################
+
+# setting verbose variable to no and creating empty array for interface name, both can be accepted on the command line.
+verbose="no" # verbose - tells the shell to show all lines in a script while they are read, activates verbose mode.
+interface_name=""
+
+########################################################################################################################
+################################
+# Create functions as required #
+################################
+# if we were to add a help function would probably include this with -h | --help
+function usagehelp {
+    echo "Usage: $0 [-v] [interface_name]"
+}
+########################################################################################################################
+while [ $# -gt 0 ]; do
+  # evaluate the first command on the command line ($!)
+  case "$1" in
+    -v )
+      verbose="yes"
+      ;;
+      # finished running the -v option
+    *)   # else if the user put anything else on the command line
+      if [ "$interface_name" != "" ]; then
+        echo "Your input is not valid."
+        exit 2
+      else
+        interface_name="$1" # assume it is an interface and add it to array named interface_name
+      fi
+      ;;
+  esac
+  shift
+done
+
 ################
 # Data Gathering
 ################
@@ -27,9 +63,10 @@
 # grep is used to filter ip command output so we don't have extra junk in our output
 # stream editing with sed and awk are used to extract only the data we want displayed
 
-#####
-# Once per host report
-#####
+#########################
+# Once per host report #
+########################
+
 [ "$verbose" = "yes" ] && echo "Gathering host information"
 # we use the hostname command to get our system name
 my_hostname=$(hostname)
@@ -72,23 +109,31 @@ EOF
 #####
 
 # define the interface being summarized
-interface="eno1"
-[ "$verbose" = "yes" ] && echo "Reporting on interface(s): $interface"
+interfaces=()
 
-[ "$verbose" = "yes" ] && echo "Getting IPV4 address and name for interface $interface"
+for interface in $(ip a |awk '/: e/{gsub(/:/,"");print $2}' | sed -e s/@ens34//g); do # identifies all interfaces including vlans (without the @interface which is causing error)
+  interfaces+=("$interface")
+  echo "${interfaces[@]}"
+done
+
+for interface in "${interfaces[@]}"; do
+
+  [ "$verbose" = "yes" ] && echo "Reporting on interface(s): $interface"
+
+  [ "$verbose" = "yes" ] && echo "Getting IPV4 address and name for interface $interface"
 # Find an address and hostname for the interface being summarized
 # we are assuming there is only one IPV4 address assigned to this interface
-ipv4_address=$(ip a s $interface|awk -F '[/ ]+' '/inet /{print $3}')
-ipv4_hostname=$(getent hosts $ipv4_address | awk '{print $2}')
+  ipv4_address=$(ip a s $interface|awk -F '[/ ]+' '/inet /{print $3}')
+  ipv4_hostname=$(getent hosts $ipv4_address | awk '{print $2}')
 
-[ "$verbose" = "yes" ] && echo "Getting IPV4 network block info and name for interface $interface"
-# Identify the network number for this interface and its name if it has one
-# Some organizations have enough networks that it makes sense to name them just like how we name hosts
-# To ensure your network numbers have names, add them to your /etc/networks file, one network to a line, as   networkname networknumber
-#   e.g. grep -q mynetworknumber /etc/networks || (echo 'mynetworkname mynetworknumber' |sudo tee -a /etc/networks)
-network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1)
-network_number=$(cut -d / -f 1 <<<"$network_address")
-network_name=$(getent networks $network_number|awk '{print $1}')
+  [ "$verbose" = "yes" ] && echo "Getting IPV4 network block info and name for interface $interface"
+  # Identify the network number for this interface and its name if it has one
+  # Some organizations have enough networks that it makes sense to name them just like how we name hosts
+  # To ensure your network numbers have names, add them to your /etc/networks file, one network to a line, as   networkname networknumber
+  #   e.g. grep -q mynetworknumber /etc/networks || (echo 'mynetworkname mynetworknumber' |sudo tee -a /etc/networks)
+  network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1)
+  network_number=$(cut -d / -f 1 <<<"$network_address")
+  network_name=$(getent networks $network_number|awk '{print $1}')
 
 cat <<EOF
 
@@ -103,3 +148,4 @@ EOF
 #####
 # End of per-interface report
 #####
+done
