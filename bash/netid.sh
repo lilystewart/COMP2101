@@ -132,7 +132,7 @@ for interface in "${interfaces[@]}"; do   # for each interface in interface arra
   #   e.g. grep -q mynetworknumber /etc/networks || (echo 'mynetworkname mynetworknumber' |sudo tee -a /etc/networks)
   network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1)
   network_number=$(cut -d / -f 1 <<<"$network_address")
-  grep -q $network_number /etc/networks || echo "network_one $network_number"|sudo tee -a /etc/networks
+  grep -q $network_number /etc/networks || echo "network $interface  $network_number"|sudo tee -a /etc/networks
   network_name=$(getent networks $network_number|awk '{print $1}')
 
 
