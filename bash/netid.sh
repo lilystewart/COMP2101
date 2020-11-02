@@ -130,10 +130,11 @@ for interface in "${interfaces[@]}"; do   # for each interface in interface arra
   # Some organizations have enough networks that it makes sense to name them just like how we name hosts
   # To ensure your network numbers have names, add them to your /etc/networks file, one network to a line, as   networkname networknumber
   #   e.g. grep -q mynetworknumber /etc/networks || (echo 'mynetworkname mynetworknumber' |sudo tee -a /etc/networks)
-  network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1)
-  network_number=$(cut -d / -f 1 <<<"$network_address")
-  grep -q $network_number /etc/networks || echo "network $interface" "$network_number"|sudo tee -a /etc/networks
-  network_name=$(getent networks $network_number|awk '{print $1}')
+  network_address=$(ip route list dev ens34 scope link | awk '{print $1'} | sed 's+/24+''+g')
+  # network_number=$(cut -d / -f 1 <<<"$network_address") This was not testing well for me due to the grep command below.
+  # ended up adding sed to network_address to get the output I needed to run the rest of the script
+  grep -q $network_address /etc/networks || echo "network $interface" "$network_address"|sudo tee -a /etc/networks
+  network_name=$(getent networks $network_address|awk '{print $1}')
 
 
 
