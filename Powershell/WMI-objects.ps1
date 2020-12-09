@@ -10,7 +10,7 @@
 
 function computer_system {
     
-    Get-CimInstance win32_computersystem | format-list Manufacturer, Model 
+    Get-WmiObject win32_computersystem | format-list Manufacturer, Model 
 }
 
 
@@ -19,7 +19,7 @@ function computer_system {
 
 function operating_system {
  
-    Get-CimInstance win32_operatingsystem |
+    Get-WmiObject win32_operatingsystem |
                                foreach {                                         
         New-Object -TypeName psobject -Property @{    
             "Edition" = $_.caption
@@ -35,7 +35,7 @@ function operating_system {
 
 function processor_description {
    
-    Get-CimInstance win32_processor | 
+    Get-WmiObject win32_processor | 
         select Name,
                CurrentClockSpeed,
                NumberofCores,
