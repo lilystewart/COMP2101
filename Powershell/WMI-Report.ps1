@@ -49,6 +49,5 @@ if ($System -eq $false -and $Disks -eq $false -and $Network -eq $false) {
             (ip_config | Out-String).Trim()
 
             ""
-           
         }
-  }
+     }
