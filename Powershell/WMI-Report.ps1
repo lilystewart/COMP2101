@@ -47,7 +47,6 @@ if ($System -eq $false -and $Disks -eq $false -and $Network -eq $false) {
             " Network Adapter "
             "========================="
             (ip_config | Out-String).Trim()
-
             ""
         }
      }
